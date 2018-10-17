@@ -1,34 +1,15 @@
-#Copyright , mitel.com 
+"""
+Copyright , Sanjeev Seera 
+Python 2.7
+"""
 
 import socket
 import random
-import time
-import string,cgi
-import os
-import SocketServer 
-from SocketServer import BaseServer
+import SocketServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from OpenSSL import SSL
-import json
-import ConfigParser
-import httplib
 
-Config = ConfigParser.ConfigParser()
 
 PNSNoti = "/pushnotification/v1.0/message"
-def ConfigSectionMap(section):
-    dict1 = {}
-    options = Config.options(section)
-    for option in options:
-        try:
-            dict1[option] = Config.get(section, option)
-            if dict1[option] == -1:
-                DebugPrint("skip: %s" % option)
-        except:
-            print("exception on %s!" % option)
-            dict1[option] = None
-    return dict1
 
 class MyHandler(SimpleHTTPRequestHandler):
     def setup(self):
@@ -67,5 +48,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
