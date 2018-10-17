@@ -1,33 +1,16 @@
-#Copyright , mitel.com 
+"""
+Copyright , Sanjeev Seera
+python 2.7
+"""
 
 import socket
 import random
-import time
-import string,cgi
-import os 
 from SocketServer import BaseServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from BaseHTTPServer import HTTPServer
 from OpenSSL import SSL
-import json
-import ConfigParser
-import httplib
-
-Config = ConfigParser.ConfigParser()
 
 PNSNoti = "/pushnotification/v1.0/message"
-def ConfigSectionMap(section):
-    dict1 = {}
-    options = Config.options(section)
-    for option in options:
-        try:
-            dict1[option] = Config.get(section, option)
-            if dict1[option] == -1:
-                DebugPrint("skip: %s" % option)
-        except:
-            print("exception on %s!" % option)
-            dict1[option] = None
-    return dict1
 
 class SecureHTTPServer(HTTPServer):
     def __init__(self, server_address, HandlerClass):
@@ -45,15 +28,14 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.connection = self.request
         self.rfile = socket._fileobject(self.request, "rb", self.rbufsize)
         self.wfile = socket._fileobject(self.request, "wb", self.wbufsize)
-        
-    
+         
     def do_POST(self):
     	try:
 	    	print "self.path"
 	    	path = self.path    
     		if PNSNoti == path:
     			AppCount = random.randint(1,100)
-    			print AppCount      # using this random value to send error responce randomly 
+    			#print AppCount      # using this random value to send error responce randomly 
     			print PNSNoti + 'is in' + path
     			if AppCount==5:
     				self.send_response(400)
@@ -78,5 +60,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
